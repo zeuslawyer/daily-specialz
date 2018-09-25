@@ -1,8 +1,29 @@
 
 
 <% include ./partials/header.ejs %>
+<div class="ui segment ">
+    <h2 class="ui teal header center aligned">
+        <img src="assets/images/logo.png" class="image">
+        <div class="content center aligned">
+          Submit Todays Specials
+        </div>
+    </h2>
+</div>
 
-<h1>this is the specials form page</h1>
-
+<div class="container">
+    <div class="ui raised container segment">
+        
+        <div class="ui form">
+            <div class="field">
+                <label>Title</label>
+                <input type="text">
+            </div>
+            <div class="field">
+            <label>description</label>
+            <textarea rows="2"></textarea>
+            </div> 
+        </div>
+    </div>
+</div>
 
 <% include ./partials/footer.ejs %>

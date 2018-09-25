@@ -13,7 +13,7 @@ var app = express();
 
 // view engine + dependencies setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -43,9 +43,10 @@ app.use(function(err, req, res, next) {
 });
 
 
-app.listen(3000, function(){
-  console.log('Server started on 3000')
-  console.log('NODE_ENV is '+ app.get('env'))
+const port = process.env.PORT || 3000;
+app.listen(port, function(){
+  console.log(`Server started on port ${port}`);
+  console.log('NODE_ENV is set to: '+ "'"+ app.get('env')+ "'")
 });
 
 module.exports = app;
