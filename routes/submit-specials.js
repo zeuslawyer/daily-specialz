@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('cafe-login.ejs', { title: 'Express' });
+  res.render('submit-specials.ejs', { title: 'Express' });
 });
 
 module.exports = router;
