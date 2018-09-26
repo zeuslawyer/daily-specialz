@@ -11,18 +11,40 @@
 </div>
 
 <div class="container">
-    <div class="ui raised container segment">  
-        <div class="ui form">
-            <div class="field">
-                <label>Title</label>
-                <input type="text">
-            </div>
-            <div class="field">
-            <label>description</label>
-            <textarea rows="2"></textarea>
-            </div> 
-        </div>
-    </div>
-</div>
+    <form action="/submit-specials" method="POST">
+        <div class="ui raised container segment">  
+            <div class="ui form">
+                <section class = "ui item item-section ">
+                    <div class="field item-title">
+                        <label>Title</label>
+                        <input type="text" name="specials[title]" placeholder="Name of this delish dish" required>
+                    </div>
+                    <div class="field item-description">
+                        <label>Description</label>
+                        <textarea rows="2"name="specials[description]"placeholder = "describe the contents" required></textarea>
+                    </div> 
+                    <div class="field item-keywords">
+                        <label>Keywords</label>
+                        <input list="keywords" name="specials[keywords]" placeholder="Enter some keywords, separataed by commas">
+                        <!-- <datalist id="keywords">
+                            <option value="gluten-free">
+                            <option value="vegetarian">
+                            <option value="vegan">
+                            <option value="spicy">
+                        </datalist> -->
+                    </div>
+                </section>
+                <section class="ui ">
+                    
+                    <div class="field row">
+                        <a href="#"> <p>  add another item </p></a>
+                        <input class="ui teal basic button" type="submit">
+                    </div> 
+                </section>
 
+        </div>
+</form>
+</div>
+<!-- KEYWORD TAGS FEATURE -->
+<!-- https://www.jqueryscript.net/form/Tag-Input-With-Autocomplete-jQuery-Tagator.html -->
 <% include ./partials/footer.ejs %>
