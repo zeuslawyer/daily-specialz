@@ -1,7 +1,7 @@
 
 
 <% include ./partials/header.ejs %>
-<div class="ui segment ">
+<div class="ui raised container segment ">
     <h2 class="ui teal header center aligned">
         <img src="assets/images/logo.png" class="image">
         <div class="content center aligned">
@@ -10,10 +10,10 @@
     </h2>
 </div>
 
-<div class="container">
+<div class="">
     <form action="/submit-specials" method="POST">
-        <div class="ui raised container segment">  
-            <div class="ui form">
+        <div class="">  
+            <div class=" form ui raised container segment">
                 <section class = "ui item item-section ">
                     <div class="field item-title">
                         <label>Title</label>
@@ -35,14 +35,14 @@
                     </div>
                 </section>
                 <section class="ui ">
-                    
                     <div class="field row">
                         <a href="#"> <p>  add another item </p></a>
-                        <input class="ui teal basic button" type="submit">
                     </div> 
                 </section>
-
         </div>
+        <section class="">
+            <input class="ui teal basic button" type="submit">
+        </section>
 </form>
 </div>
 <!-- KEYWORD TAGS FEATURE -->

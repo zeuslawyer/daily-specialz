@@ -1,6 +1,34 @@
 <% include ./partials/header.ejs %>
 
 
-<h1>This is the home route</h1>
+<div class="ui raised container segment" >
+    <div >
+        <img src="/images/food.jpeg" class="ui fluid image">
+        <h2 class="ui teal header center aligned">
+                Today's Specials Near You
+        </h2>
+    </div>
+</div>
 
+
+<div class="ui raised container segment">
+  <%  if(specials.length === 0) { %>
+        <p class="ui">
+            Boo! Hiss! Your area doesn't have any specials listed! 
+            Tell 'em to pull their finger out!
+        </p>
+   <% } else {  %>
+        <% specials.forEach( (special) => { %>
+            <section class="segment ui">
+                <div>
+                        <p> Title: <%= special.title %> </p>
+                        <p> Description: <%= special.description %> </p>
+                        <p> Tags: <%= special.keywords %> </p>
+                </div>
+            </section>
+            
+       <% }); %>  
+  <% }  %>
+
+</div>
 <% include ./partials/footer.ejs %>
