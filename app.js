@@ -10,9 +10,13 @@ var cafeRouter = require('./routes/cafes');
 var usersRouter = require('./routes/users');
 var submitRouter = require('./routes/submit-specials');
 
+const db = require('./helpers/firestore-setup')
+
 var app = express();
 
+// =======================================
 // view engine + dependencies setup
+// =======================================
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));
@@ -23,18 +27,24 @@ app.use(express.static(__dirname + '/public'));  //serve static assets in public
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//mount routes
+// =======================================
+// MOUNT ROUTES
+// =======================================
 app.use('/', indexRouter);
 app.use('/cafe-login', cafeRouter);
 app.use('/users', usersRouter);
 app.use('/submit-specials', submitRouter);
+
+
+// =======================================
+// error handler + default route error
+// =======================================
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
@@ -53,3 +63,4 @@ app.listen(port, function(){
 });
 
 module.exports = app;
+
