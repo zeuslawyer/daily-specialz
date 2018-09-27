@@ -10,7 +10,7 @@ var cafeRouter = require('./routes/cafes');
 var usersRouter = require('./routes/users');
 var submitRouter = require('./routes/submit-specials');
 
-const db = require('./helpers/firestore-setup')
+const middleware = require('./helpers/middleware');
 
 var app = express();
 
@@ -27,6 +27,7 @@ app.use(express.static(__dirname + '/public'));  //serve static assets in public
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // =======================================
 // MOUNT ROUTES
 // =======================================
@@ -41,19 +42,19 @@ app.use('/submit-specials', submitRouter);
 // =======================================
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error.ejs');
-});
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error.ejs');
+// });
 
 
 const port = process.env.PORT || 3000;
