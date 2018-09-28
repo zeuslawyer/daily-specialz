@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // MOUNT ROUTES
 // =======================================
 app.use('/', indexRouter);
-app.use('/cafe-login', cafeRouter);
+app.use('/cafes', cafeRouter);
 app.use('/users', usersRouter);
 app.use('/submit-specials', submitRouter);
 

@@ -1,0 +1,47 @@
+
+<% include ./partials/header.ejs %>
+<div class="ui  inverted header text container center aligned" >
+    <h1 class ="ui teal  header" >Welcome - let's get you signed up.</h1>
+</div>
+
+<div class="form-container">
+    <form class="ui form raised container segment" action="/cafes/register" method="POST">
+        
+        <label> <b> Primary Contact </b></label>
+        <div class=" fields">
+            <div class="field">
+                <input type="text" name="first-name" placeholder="First Name" required>
+            </div>
+            <div class="field">
+                <input type="text" name="last-name" placeholder="Last Name" required>
+            </div>
+        </div>
+
+        <label> <b> Login Details </b> </label> 
+        <div class="fields">
+            <div class="field">
+                <input type="email" name="email" placeholder="Email (also your login)" required>
+            </div>
+
+            <div class="field">
+                <input type="password" name="password" placeholder="password" required>
+            </div>
+        </div>
+
+        <label> <b> About your establishment </b> </label> 
+        <div class="field">
+                <input type="text" name="display-name" placeholder="What customers call your establishment">
+            </div>
+        <div class="field">
+            <input type="text" name="address" placeholder="This is where your customers can find you" required>
+        </div>
+            
+        <div class="field">
+            <input type="text" name="contact-number" placeholder="Business Phone">
+        </div>
+
+               <button class="ui teal simple button" type="submit">Submit</button>
+      </form>
+</div>
+
+<% include ./partials/footer.ejs %>

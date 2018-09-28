@@ -3,12 +3,18 @@ const admin = require('firebase-admin');
 var serviceAccount = require('../secrets/daily-specialz-f4bd522c9c77.json');
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://daily-specialz.firebaseio.com"
 });
 
 var db = admin.firestore();
+
 module.exports = db;
 
+
+// =======================================
+// database seeding
+// =======================================
 // var docRef = db.collection('test_env').doc('sample_users').collection('test-coll').doc('sub_d0c');
 
 // var setAda = docRef.set({
