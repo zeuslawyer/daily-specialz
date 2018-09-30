@@ -18,6 +18,11 @@ router.get('/login', function(req, res, next) {
   res.render('./cafe/cafe-login.ejs');
 });
 
+/* POST cafe login PAGE */
+router.post('/login', function(req, res, next) {
+  res.send( req.body);
+});
+
 /* REGISTRATION POST ROUTE*/
 router.post('/register', middleware.createNewFirebaseUser, middleware.saveUserToDb, (req, res)=>{
   res.render('test.ejs', {from:"cafe login route - on form submit"})
