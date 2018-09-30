@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var {createNewFirebaseUser} = require('../helpers/helper-functions')
+// var {createNewFirebaseUser} = require('../helpers/helper-functions')
+const middleware = require('../helpers/middleware');
 
 
 router.get('/', function(req, res, next) {
@@ -13,9 +14,7 @@ router.get('/register', function(req, res, next) {
 });
 
 /* REGISTRATION POST ROUTE*/
-router.post('/register', (req, res)=>{
-  console.log(req.body, ' saving to db....');
-  createNewFirebaseUser(req.body);
+router.post('/register', middleware.createNewFirebaseUser, middleware.saveUserToDb, (req, res)=>{
   res.render('test.ejs', {from:"cafe login route - on form submit"})
 })
 

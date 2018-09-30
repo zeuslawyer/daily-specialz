@@ -42,19 +42,20 @@ app.use('/submit-specials', submitRouter);
 // =======================================
 
 // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
 
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error.ejs');
-// });
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error.ejs', {errorMessage: err || 'Unclear nature of error'});
+});
 
 
 const port = process.env.PORT || 3000;
