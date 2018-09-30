@@ -10,7 +10,12 @@ router.get('/', function(req, res, next) {
 
 /* GET CAFE REGISTRATION PAGE */
 router.get('/register', function(req, res, next) {
-  res.render('cafe-register.ejs');
+  res.render('./cafe/cafe-register.ejs');
+});
+
+/* GET cafe login PAGE */
+router.get('/login', function(req, res, next) {
+  res.render('./cafe/cafe-login.ejs');
 });
 
 /* REGISTRATION POST ROUTE*/
