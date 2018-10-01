@@ -5,7 +5,8 @@ const middleware = require('../helpers/middleware');
 
 
 router.get('/', function(req, res, next) {
-  res.send('no route for /cafes yet');
+  // redirect to login page if user comes to just /cafes
+  res.redirect('/cafes/login')
 });
 
 /* GET CAFE REGISTRATION PAGE */

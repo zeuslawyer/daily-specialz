@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const db = require('../helpers/firestore-setup');
+const db = require('../helpers/firestore-admin');
 const app = require('../app')
 
 

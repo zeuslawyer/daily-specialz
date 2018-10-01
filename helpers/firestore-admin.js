@@ -1,15 +1,23 @@
-const admin = require('firebase-admin');
 
-var serviceAccount = require('../secrets/daily-specialz-f4bd522c9c77.json');
-
+// FIREBASE ADMIN SDK SETUP
+const admin = require('firebase-admin')
+var adminCredentials = require('../secrets/firebase-admin-credentials.json');
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(adminCredentials),
   databaseURL: "https://daily-specialz.firebaseio.com"
 });
 
 var db = admin.firestore();
 
-module.exports = db;
+
+//FIREBASE AUTH SDK SETUP
+const firebase = require('firebase')
+require ('firebase/auth')
+const authConfig = require('../secrets/firebase-auth-credentials.js')
+firebase.initializeApp(authConfig)
+var firebaseAuth = firebase.auth()
+
+module.exports = {db, firebaseAuth};
 
 
 // =======================================

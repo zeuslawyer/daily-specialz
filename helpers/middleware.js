@@ -1,7 +1,7 @@
 const app = require('../app')
 const admin = require('firebase-admin');
 const helpers = require('./helper-functions')
-const db = require('../helpers/firestore-setup');
+const db = require('../helpers/firestore-admin');
 
 
 const middleware = {}
@@ -56,3 +56,6 @@ module.exports = middleware;
 // https://handyman.dulare.com/passing-variables-through-express-middleware/    --> passing data within the server
 
 // https://firebase.google.com/docs/auth/admin/manage-users      --> create and manage users from the node server
+
+
+// https://medium.com/@codemonk/using-firebase-as-an-authenticating-middleware-in-express-js-99df5f19302f    -->using firebase auth check as middleware:>> 
