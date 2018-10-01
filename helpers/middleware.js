@@ -2,7 +2,8 @@ const app = require('../app')
 const admin = require('firebase-admin');
 const helpers = require('./helper-functions')
 const {db, firebaseAuth, adminAuth} = require('../helpers/firestore-admin');
-
+const here_api = require('../secrets/hereAPI.json')
+const fetch = require('node-fetch')
 
 const middleware = {}
 
@@ -34,8 +35,11 @@ middleware.createNewFirebaseUser = (req, res, next) => {
         });
 }
 
-middleware.saveUserToDb = function(req, res, next){
+middleware.saveUserToDb = async function(req, res, next){
   let data = req.body
+  let coordinates = await geoCodeUser(data);
+  data.coordinates = coordinates
+
   const USER_COLL = process.env.DB_USER_COLL || 'dev_env_users';
 
   //get res.locals.userRecord from previous middleware
@@ -48,22 +52,9 @@ middleware.saveUserToDb = function(req, res, next){
       console.log("Error fetching user data:", error.message);
     });      
 }
-
-
 // =======================================
-// ......
+// GET CURRENT USER OBJECT FROM FIREBASE
 // =======================================
-
-middleware.isAuthenticated = function (req, res, next) {
-  let user  = firebaseAuth.currentUser;
-  if (user !== null) {
-    req.user = user;
-    next();
-  } else {
-    res.redirect('error', {errorMessage: 'You need to log in to access this page'})
-  }
-}
-
 middleware.getCurrentUser = function (req, res, next) {
   console.log('REQ PATH = ',req.path, '\n=========\n')
   console.log(req.body)
@@ -78,10 +69,36 @@ middleware.getCurrentUser = function (req, res, next) {
       console.log("Error fetching user data:", error);
       next()
     });
-
 }
 
 
+middleware.isAuthenticated = function (req, res, next) {
+  let user  = firebaseAuth.currentUser;
+  if (user !== null) {
+    req.user = user;
+    next();
+  } else {
+    res.redirect('error', {errorMessage: 'You need to log in to access this page'})
+  }
+}
+
+
+async function geoCodeUser(userData){
+  let coordinates = []
+  let address = userData.address;
+  // sample addres : https://geocoder.api.here.com/6.2/geocode.json?app_id=V6PIkh4NxmLvNdagihaa&app_code=QB2fWuLaD1jjddRZzCwa-Q&searchtext=36+batman+street fitzroy north
+  // const URL = here_api.geocodeURL+address
+  const URL = 'https://geocoder.api.here.com/6.2/geocode.json?app_id=V6PIkh4NxmLvNdagihaa&app_code=QB2fWuLaD1jjddRZzCwa-Q&searchtext=32%20cecil%20street%20fitzroy'
+  const resultData = await fetch(URL).then(d=>d.json())
+  // resultData.then(d=> console.log(resultData.Response.View[0].Result[0]))
+  let lat = resultData.Response.View[0].Result[0].Location.DisplayPosition.Latitude
+  let lon = resultData.Response.View[0].Result[0].Location.DisplayPosition.Longitude
+  coordinates =[lat,lon]
+  // console.log('\n=====\n', resultData.Response.View[0].Result[0].Location.DisplayPosition)
+  console.log('\n=====\n', coordinates)
+
+  return coordinates
+}
 
 module.exports = middleware;
 

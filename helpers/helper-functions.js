@@ -10,7 +10,12 @@ helpers.findUserFromFirebase = function(userID){
 
 }
 
+// =======================================
+// GEO CODE STUFF
+// =======================================
+helpers.geocodeUser = function(userData){
 
+}
 module.exports = helpers;
 
 
