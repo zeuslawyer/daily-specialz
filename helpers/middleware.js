@@ -1,7 +1,7 @@
 const app = require('../app')
 const admin = require('firebase-admin');
 const helpers = require('./helper-functions')
-const {db} = require('../helpers/firestore-admin');
+const {db, firebaseAuth, adminAuth} = require('../helpers/firestore-admin');
 
 
 const middleware = {}
@@ -20,9 +20,11 @@ middleware.createNewFirebaseUser = (req, res, next) => {
         disabled: false,
       })
         .then(function(userRecord) {
-          console.log("Successfully created new Firebase User Object:>>  ", userRecord.uid);
+          // console.log("Successfully created new Firebase User Object:>>  ", userRecord.uid);
+          
           // firebase user UID becomes the document ID in the firestore database for easier cross-ref
           res.locals.userRecord = userRecord
+          // console.log('\nATTACHED to LOCALS => \n', res.locals.userRecord);
           next()
         })
         .catch(function(error) {
@@ -35,16 +37,50 @@ middleware.createNewFirebaseUser = (req, res, next) => {
 middleware.saveUserToDb = function(req, res, next){
   let data = req.body
   const USER_COLL = process.env.DB_USER_COLL || 'dev_env_users';
-//get res.locals.userRecord from previous middleware
+
+  //get res.locals.userRecord from previous middleware
   db.collection(USER_COLL).doc(res.locals.userRecord.uid).set(data)
     .then(writeTime => {
-      console.log(`saved new user....with id...${res.locals.userRecord.uid}\n `)
+      // console.log(`\n===\nSaved new user with id...${res.locals.userRecord.uid}\n `)
       next();   // next must be called inside of then()
     })
     .catch(function(error) {
       console.log("Error fetching user data:", error.message);
     });      
 }
+
+
+// =======================================
+// ......
+// =======================================
+
+middleware.isAuthenticated = function (req, res, next) {
+  let user  = firebaseAuth.currentUser;
+  if (user !== null) {
+    req.user = user;
+    next();
+  } else {
+    res.redirect('error', {errorMessage: 'You need to log in to access this page'})
+  }
+}
+
+middleware.getCurrentUser = function (req, res, next) {
+  console.log('REQ PATH = ',req.path, '\n=========\n')
+  console.log(req.body)
+  adminAuth.getUserByEmail(req.body.email)
+    .then(function(userRecord) {
+      // See the UserRecord reference doc for the contents of userRecord.
+      res.locals.currentUser = userRecord.toJSON();
+      console.log("Successfully fetched user data:", res.locals.currentUser);
+      next();
+    })
+    .catch(function(error) {
+      console.log("Error fetching user data:", error);
+      next()
+    });
+
+}
+
 
 
 module.exports = middleware;

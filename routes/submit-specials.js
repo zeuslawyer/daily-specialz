@@ -1,20 +1,35 @@
 var express = require('express');
 var router = express.Router();
-const db = require('../helpers/firestore-admin');
 const app = require('../app')
+const middleware = require('../helpers/middleware')
+const helpers = require('../helpers/helper-functions')
+const {db, firebaseAuth, adminAuth} = require('../helpers/firestore-admin');
 
 
 // =======================================
-// NEW SPECIALS GET FORM
+// GET - new specials form
 // =======================================
-router.get('/', function(req, res, next) {
-  res.render('submit-specials.ejs');
+//YWnHjZFLDXf68CXCjHib13IM8oO2
+router.get('/:userId',  async function(req, res, next) {
+  let userId = req.params.userId;
+  adminAuth.getUser(userId)
+    .then(function(userRecord) {
+      // See the UserRecord reference doc for the contents of userRecord.
+      // console.log('\nFETCHED user record from db \n',  userRecord);
+    })
+    .then(function(user) {
+      res.render('submit-specials.ejs')
+    })
+    .catch(function(error) {
+      console.log("============\n GET new specials form - could not retrieve user", error);
+      //
+    });
 });
 
 // =======================================
 // NEW SPECIALS POST ROUTE
 // =======================================
-router.post('/', saveSpecialsToDatabase, getDocId, function(req, res, next) {
+router.post('/:userId',   saveSpecialsToDatabase, getDocId, function(req, res, next) {
 
   res.render('test.ejs', {from: 'submit specials post route'})
 

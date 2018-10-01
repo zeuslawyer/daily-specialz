@@ -11,28 +11,29 @@ router.get('/', function(req, res, next) {
   res.redirect('/cafes/login')
 });
 
-/* GET CAFE REGISTRATION PAGE */
+/* GET - NEW CAFE REGISTRATION PAGE */
 router.get('/register', function(req, res, next) {
   res.render('./cafe/cafe-register.ejs');
 });
 
-/*  POST  cafe registration ROUTE*/
+/*  POST - new cafe registration ROUTE*/
 router.post('/register', middleware.createNewFirebaseUser, middleware.saveUserToDb, (req, res)=>{
-  res.render('test.ejs', {from:"cafe login route - on form submit"})
+  res.redirect('/submit-specials/'+res.locals.userRecord.uid)
+  // res.render('test.ejs', {from:"cafe login route - on form submit"})
 })
 
-/* GET cafe LOGIN PAGE */
+/* GET - cafe LOGIN PAGE */
 router.get('/login', function(req, res, next) {
   res.render('./cafe/cafe-login.ejs');
 });
 
-/* POST cafe LOGIN page */
+/* POST-  cafe LOGIN page */
 router.post('/login', function(req, res, next) {
   adminAuth.getUserByEmail(req.body.email)
     .then(function(userRecord) {
       // See the UserRecord reference doc for the contents of userRecord.
-      console.log("========\nSuccessfully fetched user data:", userRecord.toJSON());
-      res.redirect('/submit-specials');
+      // console.log("========\nSuccessfully fetched user data:", userRecord.toJSON());
+      res.redirect('/submit-specials/'+userRecord.uid);
     })
     .catch(function(error) {
       console.log("============\nError fetching user data:", error);

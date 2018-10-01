@@ -1,12 +1,14 @@
 const app = require('../app');
-const admin = require('firebase-admin');
+const {db, firebaseAuth, adminAuth} = require('./firestore-admin');
 
 
 const helpers = {};
 
 
 //TODO 
+helpers.findUserFromFirebase = function(userID){
 
+}
 
 
 module.exports = helpers;
