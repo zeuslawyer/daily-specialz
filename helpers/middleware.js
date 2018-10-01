@@ -1,7 +1,7 @@
 const app = require('../app')
 const admin = require('firebase-admin');
 const helpers = require('./helper-functions')
-const db = require('../helpers/firestore-admin');
+const {db} = require('../helpers/firestore-admin');
 
 
 const middleware = {}
@@ -42,7 +42,7 @@ middleware.saveUserToDb = function(req, res, next){
       next();   // next must be called inside of then()
     })
     .catch(function(error) {
-      console.log("Error fetching user data:", error);
+      console.log("Error fetching user data:", error.message);
     });      
 }
 

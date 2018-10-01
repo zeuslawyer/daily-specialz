@@ -8,16 +8,20 @@ admin.initializeApp({
 });
 
 var db = admin.firestore();
+var adminAuth = admin.auth();
 
 
-//FIREBASE AUTH SDK SETUP
+//FIREBASE JS SDK SETUP
 const firebase = require('firebase')
 require ('firebase/auth')
-const authConfig = require('../secrets/firebase-auth-credentials.js')
-firebase.initializeApp(authConfig)
+const firebaseConfig = require('../secrets/firebase-auth-credentials.js')
+firebase.initializeApp(firebaseConfig)
 var firebaseAuth = firebase.auth()
 
-module.exports = {db, firebaseAuth};
+module.exports = {db, firebaseAuth, adminAuth};
+
+
+
 
 
 // =======================================
