@@ -5,6 +5,10 @@ const {db, firebaseAuth, adminAuth} = require('../helpers/firestore-admin');
 const here_api = require('../secrets/hereAPI.json')
 const fetch = require('node-fetch')
 
+//setup database refs
+const USER_COLL = process.env.DB_USER_COLL || 'dev_env_users';
+const SPECIALS_COLL = process.env.DB_SPECIALS_COLL || 'dev_env_specials';
+
 const middleware = {}
 
 // =======================================
@@ -37,6 +41,7 @@ middleware.createNewFirebaseUser = (req, res, next) => {
 
 middleware.saveUserToDb = async function(req, res, next){
   let data = req.body
+  data.specials_refs = []
   let updatedUserData = await updateUserCoordsAndAddress(data);
   data = updatedUserData
   const USER_COLL = process.env.DB_USER_COLL || 'dev_env_users';

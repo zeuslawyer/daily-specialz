@@ -14,11 +14,14 @@ var adminAuth = admin.auth();
 //FIREBASE JS SDK SETUP
 const firebase = require('firebase')
 require ('firebase/auth')
+require ('firebase/firestore')
+
 const firebaseConfig = require('../secrets/firebase-auth-credentials.js')
 firebase.initializeApp(firebaseConfig)
 var firebaseAuth = firebase.auth()
+var firestore = firebase.firestore()
 
-module.exports = {db, firebaseAuth, adminAuth};
+module.exports = {db, firebaseAuth, adminAuth, firebase};
 
 
 
