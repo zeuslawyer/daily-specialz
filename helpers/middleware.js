@@ -91,19 +91,20 @@ async function updateUserCoordsAndAddress(userData){
   let address = userData.address;
   const URL = here_api.geocodeURL+address
   console.log('URL IS:   ', URL)
-  // const URL = 'https://geocoder.api.here.com/6.2/geocode.json?app_id=V6PIkh4NxmLvNdagihaa&app_code=QB2fWuLaD1jjddRZzCwa-Q&searchtext=32%20cecil%20street%20fitzroy'
   const resultData = await fetch(URL)
-    .then(d=>d.json())
-    .catch(err => console.log('ERROR IN FETCHING GEOCODE\n ', err))
+                          .then(d=>d.json())
+                          .catch(err => console.log('ERROR IN FETCHING GEOCODE\n ', err))
   // resultData.then(d=> console.log(resultData.Response.View[0].Result[0]))
   let lat = resultData.Response.View[0].Result[0].Location.DisplayPosition.Latitude
   let lon = resultData.Response.View[0].Result[0].Location.DisplayPosition.Longitude
-  updatedAddress = resultData.Response.View[0].Result[0].Location.Address.Label
+ 
   coordinates =[lat,lon]
-  // console.log('\n=====\n', resultData.Response.View[0].Result[0].Location.DisplayPosition)
   console.log('\n=====\n', coordinates)
-  userData.address = updatedAddress;
   userData.coordinates = coordinates;
+
+  updatedAddress = resultData.Response.View[0].Result[0].Location.Address.Label
+  userData.address = updatedAddress;
+  
   return userData;
 }
 
