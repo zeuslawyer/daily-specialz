@@ -39,7 +39,6 @@ middleware.saveUserToDb = async function(req, res, next){
   let data = req.body
   let updatedUserData = await updateUserCoordsAndAddress(data);
   data = updatedUserData
-
   const USER_COLL = process.env.DB_USER_COLL || 'dev_env_users';
   
   /*
@@ -55,8 +54,10 @@ middleware.saveUserToDb = async function(req, res, next){
       console.log("Error fetching user data:", error.message);
     });      
 }
+
+
 // =======================================
-// GET CURRENT USER OBJECT FROM FIREBASE
+// GET CURRENT USER OBJECT FROM FIREBASE AUTH
 // =======================================
 middleware.getCurrentUser = function (req, res, next) {
   console.log('REQ PATH = ',req.path, '\n=========\n')

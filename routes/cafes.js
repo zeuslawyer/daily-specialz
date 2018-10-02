@@ -52,26 +52,22 @@ router.post('/login', function(req, res, next) {
 // NEW SPECIALS FORM     /cafes/id/new
 // =======================================
 
-//YWnHjZFLDXf68CXCjHib13IM8oO2
 router.get('/:userId/new',  async function(req, res, next) {
   let userId = req.params.userId;
   adminAuth.getUser(userId)                 //TODO - refactor to use DB instead of AdminAuth
     .then(function(userRecord) {
-
-      /// ???????????????
-    })
-    .then(function(user) {
-      res.render('specials-form.ejs')  // TODO: pass the array of specials from User Record
+      console.log(`\n=======  PASSING... ${userRecord.uid} & ${userId}`)
+      res.render('specials-form.ejs', {userID:userId})  // TODO: pass the array of specials from User Record
     })
     .catch(function(error) {
       console.log("============\n GET new specials form - could not retrieve user", error);
-      //
     });
 });
 
 
 router.post('/:userId',   saveSpecialsToDatabase, getDocId, function(req, res, next) {
-  res.render('test.ejs', {from: 'submit specials post route'})
+  console.log(`\n now this is just before rendering view - doc id is \n${res.locals.doc_id}\n`)
+  res.redirect('/cafes/'+req.params.userId)
 });
 
 // =======================================
@@ -100,11 +96,12 @@ function saveSpecialsToDatabase(req, res, next){
           //REFERENCE on passing data between middleware and across app:
         // https://handyman.dulare.com/passing-variables-through-express-middleware/
       res.locals.doc_id = ref.id;
+      console.log(ref.id)
       next();   // next must be called inside of then()
     });
 }
 
 function getDocId(req, res, next) {
-  console.log('res.locals.doc_id has a value:  ', res.locals.doc_id ? 'TRUE' : 'FALSE' , `doc is ${res.locals.doc_id}`)
+  console.log('res.locals.doc_id has a value:  ', res.locals.doc_id ? 'TRUE' : 'FALSE' , `doc is ${res.locals.doc_id}\n`)
   next()
 }
