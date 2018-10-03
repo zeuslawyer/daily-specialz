@@ -3,7 +3,7 @@ var router = express.Router();
 // var {createNewFirebaseUser} = require('../helpers/helper-functions')
 const middleware = require('../helpers/middleware');
 const helpers = require('../helpers/helper-functions');
-const {db, firebaseAuth, adminAuth} = require ('../helpers/firestore-admin')
+const {db, firestore_db, adminAuth} = require ('../helpers/firestore-admin')
 
 
 
@@ -36,7 +36,7 @@ router.get('/login', function(req, res, next) {
 
 /* POST-  cafe LOGIN page */
 router.post('/login', function(req, res, next) {
-  adminAuth.getUserByEmail(req.body.email)              //TODO - refactor to use DB instead of AdminAuth
+  adminAuth.getUserByEmail(req.body.email)             
     .then(function(userRecord) {
       // See the UserRecord reference doc for the contents of userRecord.
       // console.log("========\nSuccessfully fetched user data:", userRecord.toJSON());
@@ -67,7 +67,7 @@ router.get('/:userId/new',  async function(req, res, next) {
 
 
 router.post('/:userId',   saveSpecialsToDatabase, getDocId, function(req, res, next) {
-  // console.log(`\n now this is just before rendering view - doc id is \n${res.locals.specials_ref_id}\n`)
+  // console.log(`\n received doc id from res.locals object... - doc id is \n${res.locals.specials_ref_id}\n`)
   res.redirect('/cafes/'+req.params.userId)
 });
 
@@ -83,24 +83,22 @@ router.get('/:userId', function(req, res, next) {
 
 module.exports = router;
 
-
-
 // =======================================
 // MIDDLEWARE
 // =======================================
 
 function saveSpecialsToDatabase(req, res, next){
-  const SPECIALS_COLL = process.env.DB_SPECIALS_COLL || 'dev_env_specials';
+  const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_specials';
   
   let data = req.body.specials
   data.user_id = req.params.userId
   
-  db.collection(SPECIALS_COLL).add(data)
+  db.collection(SPECIALS_COLLECTION).add(data)
     .then(ref => {
           //REFERENCE on passing data between middleware and across app:
         // https://handyman.dulare.com/passing-variables-through-express-middleware/
       res.locals.specials_ref_id = ref.id;
-      //TODO add this specials_ref_id to the user's DB reference
+      // add ref to specials document in the user's document, in an array
       helpers.updateSpecialsArray(req.params.userId, ref.id)
       next();   // next must be called inside of then()
     });

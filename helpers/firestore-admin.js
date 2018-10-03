@@ -19,9 +19,9 @@ require ('firebase/firestore')
 const firebaseConfig = require('../secrets/firebase-auth-credentials.js')
 firebase.initializeApp(firebaseConfig)
 var firebaseAuth = firebase.auth()
-var firestore = firebase.firestore()
+var firestore_db = firebase.firestore()
 
-module.exports = {db, firebaseAuth, adminAuth, firebase};
+module.exports = {db, firebaseAuth, adminAuth, firestore_db};
 
 
 

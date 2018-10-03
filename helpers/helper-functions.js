@@ -3,8 +3,8 @@ const {db, firebaseAuth, adminAuth} = require('./firestore-admin');
 const admin = require('firebase-admin')
 
 //setup database refs
-const USER_COLL = process.env.DB_USER_COLL || 'dev_env_users';
-const SPECIALS_COLL = process.env.DB_SPECIALS_COLL || 'dev_env_specials';
+const USER_COLLECTION = process.env.DB_USER_COLLECTION || 'dev_env_users';
+const DB_SPECIALS_COLLECTION = process.env.DB_DB_SPECIALS_COLLECTION || 'dev_env_specials';
 const helpers = {};
 
 
@@ -12,7 +12,7 @@ const helpers = {};
 // UPDATE a USER document in firestore
 // =======================================
 helpers.updateSpecialsArray = function(userID, newSpecialsRef){
-    db.collection(USER_COLL).doc(userID)
+    db.collection(USER_COLLECTION).doc(userID)
             .update({
                 specials_refs: admin.firestore.FieldValue.arrayUnion(newSpecialsRef)
             })

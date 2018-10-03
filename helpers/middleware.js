@@ -6,8 +6,8 @@ const here_api = require('../secrets/hereAPI.json')
 const fetch = require('node-fetch')
 
 //setup database refs
-const USER_COLL = process.env.DB_USER_COLL || 'dev_env_users';
-const SPECIALS_COLL = process.env.DB_SPECIALS_COLL || 'dev_env_specials';
+const USER_COLLECTIONECTION = process.env.DB_USER_COLLECTION || 'dev_env_users';
+const SPECIALS_COLLECTION = process.env.DB_SPECIALS_COLLECTION || 'dev_env_specials';
 
 const middleware = {}
 
@@ -44,13 +44,13 @@ middleware.saveUserToDb = async function(req, res, next){
   data.specials_refs = []
   let updatedUserData = await updateUserCoordsAndAddress(data);
   data = updatedUserData
-  const USER_COLL = process.env.DB_USER_COLL || 'dev_env_users';
+  const USER_COLLECTION = process.env.DB_USER_COLLECTION || 'dev_env_users';
   
   /*
   get res.locals.userRecord from previous middleware, 
   and use the FIREBASE AUTH UserID as the key for the db entry 
   */
-  db.collection(USER_COLL).doc(res.locals.userRecord.uid).set(data)
+  db.collection(USER_COLLECTION).doc(res.locals.userRecord.uid).set(data)
     .then(writeTime => {
       // console.log(`\n===\nSaved new user with id...${res.locals.userRecord.uid}\n `)
       next();   // next must be called inside of then()
