@@ -5,6 +5,8 @@ const middleware = require('../helpers/middleware');
 const helpers = require('../helpers/helper-functions');
 const {db, firestore_db, adminAuth} = require ('../helpers/firestore-admin')
 
+const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_specials';
+const USERS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_users';
 
 
 router.get('/', function(req, res, next) {
@@ -55,14 +57,8 @@ router.post('/login', function(req, res, next) {
 
 router.get('/:userId/new',  async function(req, res, next) {
   let userId = req.params.userId;
-  adminAuth.getUser(userId)                 //TODO - refactor to use DB instead of AdminAuth
-    .then(function(userRecord) {            //TODO -- do we need to get user??? we already have the id and this is the get route
-      // console.log(`\n=======  PASSING... ${userRecord.uid} & ${userId}`)
-      res.render('specials-form.ejs', {userID:userId})  // TODO: pass the array of specials from User Record
-    })
-    .catch(function(error) {
-      console.log("============\n GET new specials form - could not retrieve user", error);
-    });
+  res.render('specials-form.ejs', {userID:userId}) 
+
 });
 
 
@@ -76,8 +72,17 @@ router.post('/:userId',   saveSpecialsToDatabase, getDocId, function(req, res, n
 // =======================================
 
 router.get('/:userId', function(req, res, next) {
-  //TODO:  use uid to get list of specials
-  res.render('test.ejs', {from: `....${req.originalUrl}`})
+  let uid = req.params.userId
+  var docRefObject = db.collection('dev_env_users').doc(uid) ////returns a documentReference
+  var snap = docRefObject.get() // returns a promise
+  snap.then( (snap) => {
+    if(snap.exists){
+      res.render('cafe-profile.ejs')
+    } else(
+      res.render('error.ejs', {errorMessage: 'No such resource. Oopsie.'})
+    )
+  })
+  
 });
 
 
@@ -87,9 +92,7 @@ module.exports = router;
 // MIDDLEWARE
 // =======================================
 
-function saveSpecialsToDatabase(req, res, next){
-  const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_specials';
-  
+function saveSpecialsToDatabase(req, res, next){ 
   let data = req.body.specials
   data.user_id = req.params.userId
   

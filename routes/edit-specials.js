@@ -9,31 +9,36 @@ const {db, firebaseAuth, adminAuth} = require('../helpers/firestore-admin');
 // =======================================
 // GET - new specials form
 // =======================================
-//YWnHjZFLDXf68CXCjHib13IM8oO2
-router.get('/:userId',  async function(req, res, next) {
-  let userId = req.params.userId;
-  adminAuth.getUser(userId)
-    .then(function(userRecord) {
-      // See the UserRecord reference doc for the contents of userRecord.
-      // console.log('\nFETCHED user record from db \n',  userRecord);
-    })
-    .then(function(user) {
-      res.render('submit-specials.ejs')
-    })
-    .catch(function(error) {
-      console.log("============\n GET new specials form - could not retrieve user", error);
-      //
-    });
-});
 
-// =======================================
-// NEW SPECIALS POST ROUTE
-// =======================================
-router.post('/:userId',   saveSpecialsToDatabase, getDocId, function(req, res, next) {
+router.get('/',   function(req, res, next) {
 
-  res.render('test.ejs', {from: 'submit specials post route'})
+  res.send('EDIT NEW SPECIALS HERE?')
 
 });
+// router.get('/:userId',  async function(req, res, next) {
+//   let userId = req.params.userId;
+//   adminAuth.getUser(userId)
+//     .then(function(userRecord) {
+//       // See the UserRecord reference doc for the contents of userRecord.
+//       // console.log('\nFETCHED user record from db \n',  userRecord);
+//     })
+//     .then(function(user) {
+//       res.render('submit-specials.ejs')
+//     })
+//     .catch(function(error) {
+//       console.log("============\n GET new specials form - could not retrieve user", error);
+//       //
+//     });
+// });
+
+// // =======================================
+// // NEW SPECIALS POST ROUTE
+// // =======================================
+// router.post('/:userId',   saveSpecialsToDatabase, getDocId, function(req, res, next) {
+
+//   res.render('test.ejs', {from: 'submit specials post route'})
+
+// });
 
 module.exports = router;
 

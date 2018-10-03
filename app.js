@@ -8,7 +8,7 @@ var bodyParser = require ('body-parser');
 var indexRouter = require('./routes/index');
 var cafeRouter = require('./routes/cafes');
 var usersRouter = require('./routes/users');
-var submitRouter = require('./routes/submit-specials');
+var submitRouter = require('./routes/edit-specials');
 
 const middleware = require('./helpers/middleware');
 
@@ -40,9 +40,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // MOUNT ROUTES
 // =======================================
 app.use('/', indexRouter);
+app.use('/cafes/edit-specials', submitRouter);
 app.use('/cafes', cafeRouter);
 app.use('/users', usersRouter);
-app.use('/submit-specials', submitRouter);
+
 
 
 // =======================================
@@ -55,8 +56,8 @@ app.use('/submit-specials', submitRouter);
 //   next(createError(404));
 // });
 
+ // set locals, only providing error in development
 // app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
 //   res.locals.message = err.message;
 //   res.locals.error = req.app.get('env') === 'development' ? err : {};
 //   // render the error page

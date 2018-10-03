@@ -29,19 +29,25 @@ const fetch = require('node-fetch')
 
 
 // QUERY using admin ref to firebase
-let ref = db.collection('dev_env_users')
-let result = ref.where('last-name', '==', 'testy').get()  //gets a promise that reslolves to a QUERYSNAPSHOT  
-let out = result
-    .then(querySnapshot=>{           //iterates over each document within qsnapshot - but qsnapshotis NOT an array
-        let out = []
-        querySnapshot.forEach(docSnap=> {
-            // console.log(docSnap.data())
-            out.push(docSnap.data())
-        })
-        console.log(querySnapshot.docs.length + ' matching results\n')  // shows how many matching results
-        return out
-    });
+// let ref = db.collection('dev_env_users')
+// let result = ref.where('last-name', '==', 'testy').get()  //gets a promise that reslolves to a QUERYSNAPSHOT  
+// let out = result
+//     .then(querySnapshot=>{           //iterates over each document within qsnapshot - but qsnapshotis NOT an array
+//         let out = []
+//         querySnapshot.forEach(docSnap=> {
+//             // console.log(docSnap.data())
+//             out.push(docSnap.data())
+//         })
+//         console.log(querySnapshot.docs.length + ' matching results\n')  // shows how many matching results
+//         return out
+//     });
 
- out.then(d=>console.log(d))  
+//  out.then(d=>console.log(d))  
+
+let test = db.collection('dev_env_users').doc('3tUzVt2M5nawqk1UG3mlcKSG3wX2')  //returns a documentReference
+ //doc('/dev_env_users/3tUzVt2M5nawqk1UG3mlcKSG3wX2')
+ test.get()   //returns doc snapshot PROMISE which has an exists property
+ .then(d=>console.log(d.exists))
+// test.then(d=>console.log(d))
 
 
