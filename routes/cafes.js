@@ -4,6 +4,7 @@ var router = express.Router();
 const middleware = require('../helpers/middleware');
 const helpers = require('../helpers/helper-functions');
 const {db, firestore_db, adminAuth} = require ('../helpers/firestore-admin')
+const routeCafesId = require('./cafes/cafes_id')
 
 const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_specials';
 const USERS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_users';
@@ -70,21 +71,7 @@ router.post('/:userId',   saveSpecialsToDatabase, getDocId, function(req, res, n
 // =======================================
 //  SHOW LIST OF SPECIALS - CAFE    /cafes/id
 // =======================================
-
-router.get('/:userId', function(req, res, next) {
-  let uid = req.params.userId
-  var docRefObject = db.collection('dev_env_users').doc(uid) ////returns a documentReference
-  var snap = docRefObject.get() // returns a promise
-  snap.then( (snap) => {
-    if(snap.exists){
-      res.render('cafe-profile.ejs')
-    } else(
-      res.render('error.ejs', {errorMessage: 'No such resource. Oopsie.'})
-    )
-  })
-  
-});
-
+router.get('/:userId', routeCafesId)  //EOM
 
 module.exports = router;
 
@@ -110,4 +97,28 @@ function saveSpecialsToDatabase(req, res, next){
 function getDocId(req, res, next) {
   console.log('\n=====\nres.locals.specials_ref_id has a value:  ', res.locals.specials_ref_id ? 'TRUE' : 'FALSE' , `doc is ${res.locals.specials_ref_id}\n`)
   next()
+}
+
+async function getAllSpecials(specialsRefs) {
+  if (specialsRefs.length <1) {
+    return -1
+  }
+
+  let specialsObjects = []
+  //TODO -- refactor below
+  specialsRefs.forEach( async function (ref) {
+      var specialsDocObj = db.collection('dev_env_specials').doc(ref) ////returns a documentReference
+      var snap =    specialsDocObj.get() // returns a promise
+       snap.then( (snap) => {
+        if(snap.exists){
+          console.log('pushed one')
+          specialsObjects.push(snap.data())
+        } else(
+          console.log('\n======\ndidnt seem to find this one: ' + ref + '\n=========\n')
+        )
+      })
+  })
+  console.log('specialsObjects ARE:   ' , specialsObjects)
+  return specialsObjects;
+
 }
