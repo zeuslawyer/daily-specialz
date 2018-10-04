@@ -2,10 +2,11 @@ var express = require('express');
 var router = express.Router();
 // var {createNewFirebaseUser} = require('../helpers/helper-functions')
 const middleware = require('../helpers/middleware');
+
 const helpers = require('../helpers/helper-functions');
 const {db, firestore_db, adminAuth} = require ('../helpers/firestore-admin')
-const routeCafesId = require('./cafes/cafes_id')
-
+const routeCafesId = require('./handlers/route-cafes-id')
+const saveSpecialsToDatabase = require('../actions/save-specials-to-db')
 const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_specials';
 const USERS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_users';
 
@@ -56,10 +57,9 @@ router.post('/login', function(req, res, next) {
 // NEW SPECIALS FORM     /cafes/id/new
 // =======================================
 
-router.get('/:userId/new',  async function(req, res, next) {
+router.get('/:userId/new',  function(req, res, next) {
   let userId = req.params.userId;
   res.render('specials-form.ejs', {userID:userId}) 
-
 });
 
 
@@ -71,54 +71,62 @@ router.post('/:userId',   saveSpecialsToDatabase, getDocId, function(req, res, n
 // =======================================
 //  SHOW LIST OF SPECIALS - CAFE    /cafes/id
 // =======================================
+
 router.get('/:userId', routeCafesId)  //EOM
 
 module.exports = router;
 
+
+
+
+
+
 // =======================================
 // MIDDLEWARE
 // =======================================
-
-function saveSpecialsToDatabase(req, res, next){ 
-  let data = req.body.specials
-  data.user_id = req.params.userId
-  
-  db.collection(SPECIALS_COLLECTION).add(data)
-    .then(ref => {
-          //REFERENCE on passing data between middleware and across app:
-        // https://handyman.dulare.com/passing-variables-through-express-middleware/
-      res.locals.specials_ref_id = ref.id;
-      // add ref to specials document in the user's document, in an array
-      helpers.updateSpecialsArray(req.params.userId, ref.id)
-      next();   // next must be called inside of then()
-    });
-}
 
 function getDocId(req, res, next) {
   console.log('\n=====\nres.locals.specials_ref_id has a value:  ', res.locals.specials_ref_id ? 'TRUE' : 'FALSE' , `doc is ${res.locals.specials_ref_id}\n`)
   next()
 }
 
-async function getAllSpecials(specialsRefs) {
-  if (specialsRefs.length <1) {
-    return -1
-  }
+// function saveSpecialsToDatabase(req, res, next){ 
+//   let data = req.body.specials
+//   data.user_id = req.params.userId
+  
+//   db.collection(SPECIALS_COLLECTION).add(data)
+//     .then(ref => {
+//           //REFERENCE on passing data between middleware and across app:
+//         // https://handyman.dulare.com/passing-variables-through-express-middleware/
+//       res.locals.specials_ref_id = ref.id;
+//       // add ref to specials document in the user's document, in an array
+//       helpers.updateSpecialsArray(req.params.userId, ref.id)
+//       next();   // next must be called inside of then()
+//     });
+// }
 
-  let specialsObjects = []
-  //TODO -- refactor below
-  specialsRefs.forEach( async function (ref) {
-      var specialsDocObj = db.collection('dev_env_specials').doc(ref) ////returns a documentReference
-      var snap =    specialsDocObj.get() // returns a promise
-       snap.then( (snap) => {
-        if(snap.exists){
-          console.log('pushed one')
-          specialsObjects.push(snap.data())
-        } else(
-          console.log('\n======\ndidnt seem to find this one: ' + ref + '\n=========\n')
-        )
-      })
-  })
-  console.log('specialsObjects ARE:   ' , specialsObjects)
-  return specialsObjects;
 
-}
+
+// async function getAllSpecials(specialsRefs) {
+//   if (specialsRefs.length <1) {
+//     return -1
+//   }
+
+//   let specialsObjects = []
+//   //TODO -- refactor below
+//   specialsRefs.forEach( async function (ref) {
+//       var specialsDocObj = db.collection('dev_env_specials').doc(ref) ////returns a documentReference
+//       var snap =    specialsDocObj.get() // returns a promise
+//        snap.then( (snap) => {
+//         if(snap.exists){
+//           console.log('pushed one')
+//           specialsObjects.push(snap.data())
+//         } else(
+//           console.log('\n======\ndidnt seem to find this one: ' + ref + '\n=========\n')
+//         )
+//       })
+//   })
+//   console.log('specialsObjects ARE:   ' , specialsObjects)
+//   return specialsObjects;
+
+// }

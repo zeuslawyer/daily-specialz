@@ -1,1 +1,23 @@
-<h1>cafe profile page</h1>
+<% include ./partials/header.ejs %>
+
+<h1 class="header center aligned ui">cafe profile page</h1>
+
+<% cafe.specials.forEach( (spl) => {  %>
+    
+    <div class="ui container segment raised ">
+        <div class="title"> <%= spl.title %>  </div>
+        <div class="description"> <%= spl.description %>  </div>
+        <div class="keywords"> <%= spl.keywords %> </div>
+        <div class="edit-button"> 
+            <a href="#">edit</a>  
+        </div>
+        <div class="remove-button"> 
+            <a href="#">remove</a>  
+        </div>
+
+    </div>
+
+<% }) %>
+
+<% include ./partials/footer.ejs %>
+
