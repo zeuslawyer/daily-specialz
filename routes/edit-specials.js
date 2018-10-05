@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const app = require('../app')
 const middleware = require('../helpers/middleware')
-const helpers = require('../helpers/helper-functions')
 const {db, firebaseAuth, adminAuth} = require('../helpers/firestore-admin');
 
 

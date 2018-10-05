@@ -2,14 +2,12 @@ var express = require('express');
 var router = express.Router();
 // var {createNewFirebaseUser} = require('../helpers/helper-functions')
 const middleware = require('../helpers/middleware');
-
-const helpers = require('../helpers/helper-functions');
 const {db, firestore_db, adminAuth} = require ('../helpers/firestore-admin')
 const routeCafesId = require('./handlers/route-cafes-id')
 const saveSpecialsToDatabase = require('../actions/save-specials-to-db')
 const getCafeById = require('../actions/get-cafe-by-id')
 const addSpecialsToCafe = require('../actions/add-specials-to-cafe')
-const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_specials';
+
 const USERS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_users';
 
 
@@ -68,8 +66,8 @@ router.get('/:userId/new',  function(req, res, next) {
 });
 
 
-router.post('/:userId',   saveSpecialsToDatabase, getDocId, function(req, res, next) {
-  // console.log(`\n received doc id from res.locals object... - doc id is \n${res.locals.specials_ref_id}\n`)
+router.post('/:userId',   saveSpecialsToDatabase,  function(req, res, next) {
+  console.log(`\n received doc id from res.locals object... - doc id is \n${res.locals.specials_ref_id}\n`)
   res.redirect('/cafes/'+req.params.userId)
 });
 
@@ -91,7 +89,7 @@ module.exports = router;
 // =======================================
 
 function getDocId(req, res, next) {
-  console.log('\n=====\nres.locals.specials_ref_id has a value:  ', res.locals.specials_ref_id ? 'TRUE' : 'FALSE' , `doc is ${res.locals.specials_ref_id}\n`)
+  // console.log('\n=====\nres.locals.specials_ref_id has a value:  ', res.locals.specials_ref_id ? 'TRUE' : 'FALSE' , `doc is ${res.locals.specials_ref_id}\n`)
   next()
 }
 

@@ -2,31 +2,36 @@
 
 <h1 class="header center aligned ui">cafe profile page</h1>
 
-<% if (cafe.specials_refs.length < 1) {  %>
-    <div class="ui container section raised ">
-    <p class="ui message center">You've got no specials listed.  
-    It's time to <a href="/cafes/<%= uid%>/new">add one!</a>
-    </p>
-    </div>
-<% } %>
-
-
-<% cafe.specials.forEach( (spl) => {  %>
-    
-    <div class="ui container segment raised ">
-        <div class="title"> <%= spl.title %>  </div>
-        <div class="description"> <%= spl.description %>  </div>
-        <div class="keywords"> <%= spl.keywords %> </div>
-        <div class="edit-button"> 
-            <a href="#">edit</a>  
+<div class="ui container main-container">
+    <% if (cafe.specials.length < 1) {  %>
+        <div class="ui container section raised ">
+        <p class="ui message center">You've got no specials listed.  
+        It's time to <a href="/cafes/<%= uid%>/new">add one!</a>
+        </p>
         </div>
-        <div class="remove-button"> 
-            <a href="#">remove</a>  
-        </div>
+    <% }  else { %>
+        <% cafe.specials.forEach((spl) => {  %>
+            <div class="ui container segment raised ">
+                    <div class="title"> <%= spl.title %>  </div>
+                    <div class="description"> <%= spl.description %>  </div>
+                    <div class="keywords"> <%= spl.keywords %> </div>
+                <div class="section">
+                        <div class="edit-button"> 
+                            <a href="#">edit</a>  
+                        </div>
+                        <div class="remove-button"> 
+                            <a href="#">remove</a>  
+                        </div>
+                    </div>
+                <small hidden><%= spl.uid %></small>
+            </div>
+            
 
-    </div>
+        <% }) %>
+    <% } %>
 
-<% }) %>
+    <a href="/cafes/<%= uid%>/new">add more specials!</a>
+</div>
 
 <% include ../partials/footer.ejs %>
 

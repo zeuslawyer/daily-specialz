@@ -4,11 +4,24 @@ const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_speci
 
 
 const addSpecialsToCafe =  function (cafedoc) {
-    const iterable = cafedoc.specials_refs.map( ref =>{
+    const iterable = cafedoc.specials_refs.map( ref => {
         return db.collection(SPECIALS_COLLECTION).doc(ref).get()
-        .then(snap => (snap.data()))
+        .then((snap) => {
+            //check if undefined
+            if (snap.data()) {
+                snap.data().uid = 'HELP ME GOD!'
+                return snap.data();
+            }    
+        })
+        .then(data => {
+            data.uid = ref;
+            console.log(data)
+            return data;
+        })  
     })
+
     return Promise.all(iterable).then(specials => {
+        //attach specials array as property on cafedoc
         cafedoc.specials = specials;
         return cafedoc;
     })

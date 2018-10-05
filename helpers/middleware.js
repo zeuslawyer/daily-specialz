@@ -1,6 +1,6 @@
 const app = require('../app')
 const admin = require('firebase-admin');
-const helpers = require('./helper-functions')
+
 const {db, firebaseAuth, adminAuth} = require('../helpers/firestore-admin');
 const here_api = require('../secrets/hereAPI.json')
 const fetch = require('node-fetch')
