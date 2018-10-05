@@ -7,6 +7,8 @@ const helpers = require('../helpers/helper-functions');
 const {db, firestore_db, adminAuth} = require ('../helpers/firestore-admin')
 const routeCafesId = require('./handlers/route-cafes-id')
 const saveSpecialsToDatabase = require('../actions/save-specials-to-db')
+const getCafeById = require('../actions/get-cafe-by-id')
+const addSpecialsToCafe = require('../actions/add-specials-to-cafe')
 const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_specials';
 const USERS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_users';
 
@@ -44,11 +46,14 @@ router.post('/login', function(req, res, next) {
     .then(function(userRecord) {
       // See the UserRecord reference doc for the contents of userRecord.
       // console.log("========\nSuccessfully fetched user data:", userRecord.toJSON());
+      // getCafeById(userRecord.uid)
+      //   .then( (cafedoc) => addSpecialsToCafe(cafedoc))
+      //   .then(res.redirect('/cafes/'+userRecord.uid))
       res.redirect('/cafes/'+userRecord.uid);
     })
     .catch(function(error) {
       console.log("============\nError fetching user data:", error);
-      res.render('error.ejs', {errorMessage: error.message})
+      res.render('error.ejs', {errorMessage: error})
     });
   
 });
