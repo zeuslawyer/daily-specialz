@@ -1,4 +1,4 @@
-const {db, firestore_db, adminAuth} = require ('../helpers/firestore-admin')
+const {db, firebase} = require ('../helpers/firestore-admin')
 const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_specials';
 const updateSpecialsRefsInUserDoc = require('./update-specials-refs-in-user')
 
@@ -8,6 +8,8 @@ const saveSpecialsToDatabase =  (req, res, next) => {
     let data = req.body.specials
     //add cafe id to specials document
     data.user_id = req.params.userId
+
+    data.timestamp = firebase.firestore.Timestamp.now().toDate();
     
     // write specials doc to collection
     db.collection(SPECIALS_COLLECTION).add(data)

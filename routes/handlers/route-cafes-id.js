@@ -10,7 +10,7 @@ const routeCafesId = (req, res, next) => {
     .then(addSpecialsToCafe)
     .then(cafedoc => {
       // console.log(cafedoc)
-      //   res.send(cafedoc)
+        // res.send(cafedoc)
       res.render("cafe/cafe-profile.ejs", {
         cafe: cafedoc,
         uid: uid

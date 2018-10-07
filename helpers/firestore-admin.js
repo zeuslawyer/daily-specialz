@@ -21,7 +21,7 @@ firebase.initializeApp(firebaseConfig)
 var firebaseAuth = firebase.auth()
 var firestore_db = firebase.firestore()
 
-module.exports = {db, firebaseAuth, adminAuth, firestore_db, admin};
+module.exports = {db, firebaseAuth, adminAuth, firestore_db, admin, firebase};
 
 
 

@@ -1,5 +1,5 @@
 var express = require("express");
-var router = express.Router();
+var router = express.Router({mergeParams: true});
 const app = require("../app");
 const middleware = require("../helpers/middleware");
 const saveSpecialsToDatabase = require("../actions/save-specials-to-db");
@@ -15,7 +15,7 @@ const { db, firebaseAuth, adminAuth } = require("../helpers/firestore-admin");
 
 router.get("/", function(req, res, next) {
   let userId = req.params.userId;
-  res.render("specials-form.ejs", { userID: userId });
+  res.render("specials-form.ejs", { userId: userId });
 });
 
 router.post("/", saveSpecialsToDatabase, function(req, res, next) {
