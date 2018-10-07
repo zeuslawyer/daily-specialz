@@ -1,9 +1,11 @@
 const app = require('../app')
-const admin = require('firebase-admin');
-
-const {db, firebaseAuth, adminAuth} = require('../helpers/firestore-admin');
+const {db, admin, firebaseAuth, adminAuth} = require('../helpers/firestore-admin');
 const here_api = require('../secrets/hereAPI.json')
 const fetch = require('node-fetch')
+const updateUserCoordsAndAddress = require('../actions/update-User-Coords-And-Address')
+
+//GEOFIRE
+const {GeoFirestore} = require('geofirestore')
 
 //setup database refs
 const USER_COLLECTIONECTION = process.env.DB_USER_COLLECTION || 'dev_env_users';
@@ -42,22 +44,32 @@ middleware.createNewFirebaseUser = (req, res, next) => {
 middleware.saveUserToDb = async function(req, res, next){
   let data = req.body
   data.specials_refs = []
-  let updatedUserData = await updateUserCoordsAndAddress(data);
-  data = updatedUserData
+  data = await updateUserCoordsAndAddress(data);
+  
   const USER_COLLECTION = process.env.DB_USER_COLLECTION || 'dev_env_users';
   
   /*
   get res.locals.userRecord from previous middleware, 
   and use the FIREBASE AUTH UserID as the key for the db entry 
   */
-  db.collection(USER_COLLECTION).doc(res.locals.userRecord.uid).set(data)
-    .then(writeTime => {
-      // console.log(`\n===\nSaved new user with id...${res.locals.userRecord.uid}\n `)
-      next();   // next must be called inside of then()
-    })
-    .catch(function(error) {
-      console.log("Error fetching user data:", error.message);
-    });      
+  let userId = res.locals.userRecord.uid
+  // db.collection(USER_COLLECTION).doc(userId).set(data)
+  //   .then(writeTime => {
+  //     // console.log(`\n===\nSaved new user with id...${res.locals.userRecord.uid}\n `)
+  //     next();   // next must be called inside of then()
+  //   })
+  //   .catch(function(error) {
+  //     console.log("Error fetching user data:", error.message);
+  //   });  
+  
+  //GEOFIRE SET
+  const geofirestore = new GeoFirestore(db.collection(USER_COLLECTION))
+  var setData = {}
+  setData[userId] = data
+  geofirestore.set(setData)
+  .then((docRefID) => console.log(`=====\nDocRefID = ${docRefID}, ${Object.keys(docRefID)}, and uid is ${userId}\n`)) // ID of newly added document
+  .then(d=> next())
+  .catch( err => console.log('ERROR \n ....   ', error))
 }
 
 
@@ -92,27 +104,6 @@ middleware.isAuthenticated = function (req, res, next) {
 }
 
 
-async function updateUserCoordsAndAddress(userData){
-  let coordinates = []
-  let address = userData.address;
-  const URL = here_api.geocodeURL+address
-  console.log('URL IS:   ', URL)
-  const resultData = await fetch(URL)
-                          .then(d=>d.json())
-                          .catch(err => console.log('ERROR IN FETCHING GEOCODE\n ', err))
-  // resultData.then(d=> console.log(resultData.Response.View[0].Result[0]))
-  let lat = resultData.Response.View[0].Result[0].Location.DisplayPosition.Latitude
-  let lon = resultData.Response.View[0].Result[0].Location.DisplayPosition.Longitude
- 
-  coordinates =[lat,lon]
-  console.log('\n=====\n', coordinates)
-  userData.coordinates = coordinates;
-
-  updatedAddress = resultData.Response.View[0].Result[0].Location.Address.Label
-  userData.address = updatedAddress;
-  
-  return userData;
-}
 
 module.exports = middleware;
 

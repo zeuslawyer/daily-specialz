@@ -4,7 +4,8 @@ const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_speci
 
 
 const addSpecialsToCafe =  function (cafedoc) {
-    const iterable = cafedoc.specials_refs.map( ref => {
+
+    const iterable = cafedoc.d.specials_refs.map( ref => {
         return db.collection(SPECIALS_COLLECTION).doc(ref).get()
         .then((snap) => {
             //check if undefined
