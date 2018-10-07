@@ -8,7 +8,7 @@ var bodyParser = require ('body-parser');
 var indexRouter = require('./routes/index');
 var cafeRouter = require('./routes/cafes');
 var registerRouter = require('./routes/cafes-register');
-var submitRouter = require('./routes/edit-specials');
+var specialsRouter = require('./routes/edit-specials');
 
 const middleware = require('./helpers/middleware');
 
@@ -40,9 +40,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // MOUNT ROUTES
 // =======================================
 app.use('/', indexRouter);
+app.use('/cafes/:userId/new', specialsRouter);
 app.use('/cafes/register', registerRouter);
-app.use('/cafes/edit-specials', submitRouter);
 app.use('/cafes', cafeRouter);
+
 
 
 
