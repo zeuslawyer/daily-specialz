@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var database = require('../database.json');
+const showIndexPage = require('./handlers/route-show-index')
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index.ejs', { specials: database.specials });
-});
+router.get('/', showIndexPage);
 
 module.exports = router;
