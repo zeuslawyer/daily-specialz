@@ -3,7 +3,7 @@ const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_speci
 const updateSpecialsRefsInUserDoc = require('./update-specials-refs-in-user')
 
 
-
+// when a new special is added, this saves that as a DOCUMENT in the firestore database
 const saveSpecialsToDatabase =  (req, res, next) => { 
     let data = req.body.specials
     //add cafe id to specials document

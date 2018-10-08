@@ -14,9 +14,10 @@ const updateUserCoordsAndAddress = async function(userData) {
   const URL = here_api.geocodeURL + address;
   console.log("URL IS:   ", URL);
   const resultData = await fetch(URL)
-    .then(d => d.json())
+    .then(data => data.json())
+    // resultData.then(d=> console.log(resultData.Response.View[0].Result[0]))
     .catch(err => console.log("ERROR IN FETCHING GEOCODE\n ", err));
-  // resultData.then(d=> console.log(resultData.Response.View[0].Result[0]))
+  
 
   // add addres full text
   updatedAddress = resultData.Response.View[0].Result[0].Location.Address.Label;

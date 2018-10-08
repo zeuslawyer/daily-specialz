@@ -4,8 +4,9 @@ const SPECIALS_COLLECTION= process.env.DB_SPECIALS_COLLECTION  || 'dev_env_speci
 
 
 const addSpecialsToCafe =  function (cafedoc) {
-
-    const iterable = cafedoc.specials_refs.map( ref => {
+    //from the cafe USER document, extract the array of specials, and MAP it to an iterable use in for promise.all
+    const iterable = cafedoc.d.specials_refs.map( ref => {
+        //return array of promises that each resolve to the snapshot of the specials document from specials collection
         return db.collection(SPECIALS_COLLECTION).doc(ref).get()
                 .then((snap) => {
                     //check if undefined
@@ -22,7 +23,7 @@ const addSpecialsToCafe =  function (cafedoc) {
 
     return Promise.all(iterable).then(specials => {
         //attach specials array as property on cafedoc
-        cafedoc.specials = specials;
+        cafedoc.d.specials = specials;
         return cafedoc;
     })
 }

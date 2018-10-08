@@ -4,14 +4,14 @@
 
 <div class="ui container main-container">
     <%# THE SPECIALS ATTRIBUTE IS ONLY THERE AT THE TIME OF RENDERING, AND IS NOT PART OF THE DB DOCUMENT %>
-    <% if (cafe.specials.length < 0) {  %>
+    <% if (cafe.d.specials.length < 0) {  %>
         <div class="ui container section raised ">
         <p class="ui message center">You've got no specials listed.  
         It's time to <a href="/cafes/<%= uid%>/new">add one!</a>
         </p>
         </div>
     <% }  else { %>
-        <% cafe.specials.forEach((spl) => {  %>
+        <% cafe.d.specials.forEach((spl) => {  %>
             <div class="ui container segment raised ">
                     <div class="title"> <%= spl.title %>  </div>
                     <div class="description"> <%= spl.description %>  </div>
