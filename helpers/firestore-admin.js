@@ -1,6 +1,7 @@
 
 // FIREBASE ADMIN SDK SETUP
 const admin = require('firebase-admin')
+
 var adminCredentials = require('../secrets/firebase-admin-credentials.json');
 admin.initializeApp({
   credential: admin.credential.cert(adminCredentials),
