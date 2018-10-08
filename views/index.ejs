@@ -12,13 +12,13 @@
 
 
 <div class="ui raised container segment">
-  <%  if(!specials) { %>
+  <%  if(!userObject.specials) { %>
         <p class="ui">
             Boo! Hiss! Your area doesn't have any specials listed! 
             Tell 'em to pull their finger out!
         </p>
    <% } else {  %>
-        <% specials.forEach( (special) => { %>
+        <% userObject.specials.forEach( (special) => { %>
             <section class="segment ui">
                 <div>
                         <p> Title: <%= special.title %> </p>

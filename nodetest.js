@@ -30,4 +30,12 @@ var coords = new admin.firestore.GeoPoint(5.79, -102.41)
 // console.log(firebase.firestore.Timestamp.fromDate(new Date()).toDate())
 // console.log(new firebase.firestore.Timestamp.now().toDate())
 // console.log('object :', new Date());
-console.log('object :', firebase.firestore.Timestamp.now());
+// console.log('object :', firebase.firestore.Timestamp.now());
+var out = db
+      .collection("dev_env_specials")
+      .doc('lolyNERnINAXhT2Gfi36')
+      .get();
+
+    out.then(snap => console.log(snap.data()));
+    //   .then(snap => console.log(specials_ref + " <<<<>>>>>" + snap.exists));
+  
