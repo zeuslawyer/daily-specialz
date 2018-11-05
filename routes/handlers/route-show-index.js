@@ -16,22 +16,23 @@ const geoFirestore = new GeoFirestore(collectionRef);
 
 //ROUTE HANDLER
 const showIndexPage = function(req, res, next) {
-
     const center = new admin.firestore.GeoPoint(lat, lon);
+    
+    
     const geoQuery = geoFirestore.query({
       center: center,
       radius: 1.5//kms
       // query: (ref) => ref.where('d.specials_refs', '>', 0)    // query where specials_refs is not an array
     });
-
+   
     geoQuery.on("key_entered", (userID, userDoc, distance) => {
          console.log(`${userDoc.displayname} is ${distance} kms away`)
-
+        var out = []
         addSpecialsToCafe(userDoc)
         // .then(specials => console.log('object :', specials))
             .then(updatedUserDoc => res.render("index.ejs", { userObject: updatedUserDoc }))
     });
-    // res.render("index.ejs", { specials: undefined });
+    // res.render("index.ejs", { userObject: {} });
 };
 
 module.exports = showIndexPage;
