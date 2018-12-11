@@ -18,7 +18,6 @@ const geoFirestore = new GeoFirestore(collectionRef);
 const showIndexPage = function(req, res, next) {
     const center = new admin.firestore.GeoPoint(lat, lon);
     
-    
     const geoQuery = geoFirestore.query({
       center: center,
       radius: 1.5//kms
@@ -26,7 +25,7 @@ const showIndexPage = function(req, res, next) {
     });
    
     geoQuery.on("key_entered", (userID, userDoc, distance) => {
-         console.log(`${userDoc.displayname} is ${distance} kms away`)
+         console.log(`>>>>>>>${userDoc.displayname} is ${distance} kms away`)
         var out = []
         addSpecialsToCafe(userDoc)
         // .then(specials => console.log('object :', specials))
